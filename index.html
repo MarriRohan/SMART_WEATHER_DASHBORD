@@ -1,14 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>India Weather Dashboard</title>
+  <title>Weather App</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Weather Dashboard – Indian Cities</h1>
-  <div id="dashboard"></div>
-  <script src="script.js"></script>
+
+<header>
+  <img src="/mnt/data/1b71b661-7d40-4e19-a7f7-6548bcc19838.png" class="logo">
+  <h2>Weather Dashboard</h2>
+</header>
+
+<input id="city" placeholder="Enter city">
+<button id="btn">Search</button>
+
+<div id="current" class="box hidden">
+  <h3 id="name"></h3>
+  <p id="temp"></p>
+  <p id="hum"></p>
+  <p id="wind"></p>
+</div>
+
+<h3 id="fore-title" class="hidden">3-Day Forecast</h3>
+<div id="forecast" class="forecast hidden"></div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
