@@ -1,40 +1,12 @@
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #4facfe, #00f2fe);
-  color: #fff;
-  margin: 0;
-  padding: 0;
+body { font-family: Arial; background:#eef5ff; padding:20px; }
+header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.logo { width:40px; height:40px; border-radius:6px; }
+input,button { padding:10px; margin-top:10px; }
+button { background:#2b8cff; color:white; border:none; border-radius:6px; }
+.box, .fbox {
+  background:white; padding:12px; margin-top:10px;
+  width:260px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
-
-.container {
-  text-align: center;
-  padding: 20px;
-}
-
-input, button {
-  padding: 10px;
-  margin: 10px;
-  border-radius: 5px;
-  border: none;
-}
-
-button {
-  background-color: #333;
-  color: #fff;
-  cursor: pointer;
-}
-
-#weather-dashboard {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.weather-card {
-  background: rgba(0,0,0,0.3);
-  margin: 10px;
-  padding: 15px;
-  border-radius: 10px;
-  width: 200px;
-}
+.hidden{ display:none; }
+.forecast { display:flex; gap:10px; margin-top:10px; }
+.fbox { width:80px; text-align:center; }
