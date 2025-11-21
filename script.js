@@ -1,40 +1,42 @@
-async function getWeather() {
-  const city = document.getElementById("city-input").value;
-  const apiKey = "46bc014f7ccaffc87b0c2ba98d4abe1d"; // your OpenWeather API key
+const cities = ["Hyderabad", "Delhi", "Mumbai", "Chennai", "Kolkata"]; // fixed Indian cities
+const apiKey = "46bc014f7ccaffc87b0c2ba98d4abe1d"; // replace with your OpenWeather API key
 
+async function getWeather(city) {
   // Current weather
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city},IN&appid=${apiKey}&units=metric`;
   const response = await fetch(url);
   const data = await response.json();
 
   // Forecast (5-day)
-  const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+  const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city},IN&appid=${apiKey}&units=metric`;
   const forecastResponse = await fetch(forecastUrl);
   const forecastData = await forecastResponse.json();
 
   // Current weather card
-  const weatherDiv = document.getElementById("weather-dashboard");
-  weatherDiv.innerHTML = `
+  let html = `
     <div class="weather-card">
       <h2>${data.name}</h2>
-      <p>Temp: ${data.main.temp}°C</p>
+      <p>Temperature: ${data.main.temp} °C</p>
       <p>Humidity: ${data.main.humidity}%</p>
-      <p>Wind: ${data.wind.speed} m/s</p>
+      <p>Wind Speed: ${data.wind.speed} m/s</p>
       <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png">
     </div>
   `;
 
-  // Forecast cards (next 5 days, every 24h)
-  let forecastHTML = "";
+  // Forecast (next 5 days, one per day)
   for (let i = 0; i < forecastData.list.length; i += 8) {
     let day = forecastData.list[i];
-    forecastHTML += `
+    html += `
       <div class="weather-card">
         <h3>${new Date(day.dt_txt).toLocaleDateString()}</h3>
-        <p>${day.main.temp}°C</p>
+        <p>${day.main.temp} °C</p>
         <img src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png">
       </div>
     `;
   }
-  weatherDiv.innerHTML += forecastHTML;
+
+  document.getElementById("dashboard").innerHTML += html;
 }
+
+// Load weather for all fixed Indian cities automatically
+cities.forEach(city => getWeather(city));
