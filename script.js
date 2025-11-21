@@ -1,42 +1,38 @@
-const cities = ["Hyderabad", "Delhi", "Mumbai", "Chennai", "Kolkata"]; // fixed Indian cities
-const apiKey = "46bc014f7ccaffc87b0c2ba98d4abe1d"; // replace with your OpenWeather API key
+const key = "YOUR_API_KEY"; // replace
+const $ = s => document.querySelector(s);
 
-async function getWeather(city) {
+$("#btn").onclick = getWeather;
+
+async function getWeather() {
+  let city = $("#city").value;
+  if (!city) return;
+
   // Current weather
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city},IN&appid=${apiKey}&units=metric`;
-  const response = await fetch(url);
-  const data = await response.json();
+  let c = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${key}`
+  ).then(r => r.json());
 
-  // Forecast (5-day)
-  const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city},IN&appid=${apiKey}&units=metric`;
-  const forecastResponse = await fetch(forecastUrl);
-  const forecastData = await forecastResponse.json();
+  $("#name").textContent = c.name;
+  $("#temp").textContent = "Temperature: " + c.main.temp + "°C";
+  $("#hum").textContent = "Humidity: " + c.main.humidity + "%";
+  $("#wind").textContent = "Wind: " + c.wind.speed + " m/s";
 
-  // Current weather card
-  let html = `
-    <div class="weather-card">
-      <h2>${data.name}</h2>
-      <p>Temperature: ${data.main.temp} °C</p>
-      <p>Humidity: ${data.main.humidity}%</p>
-      <p>Wind Speed: ${data.wind.speed} m/s</p>
-      <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png">
-    </div>
-  `;
+  $("#current").classList.remove("hidden");
 
-  // Forecast (next 5 days, one per day)
-  for (let i = 0; i < forecastData.list.length; i += 8) {
-    let day = forecastData.list[i];
-    html += `
-      <div class="weather-card">
-        <h3>${new Date(day.dt_txt).toLocaleDateString()}</h3>
-        <p>${day.main.temp} °C</p>
-        <img src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png">
+  // Forecast (3 sample days)
+  let f = await fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${key}`
+  ).then(r => r.json());
+
+  const days = [0, 8, 16]; // roughly 3 days
+
+  $("#forecast").innerHTML = days.map(i => `
+      <div class="fbox">
+        <p>${f.list[i].dt_txt.split(" ")[0]}</p>
+        <p>${Math.round(f.list[i].main.temp)}°C</p>
       </div>
-    `;
-  }
+    `).join("");
 
-  document.getElementById("dashboard").innerHTML += html;
+  $("#fore-title").classList.remove("hidden");
+  $("#forecast").classList.remove("hidden");
 }
-
-// Load weather for all fixed Indian cities automatically
-cities.forEach(city => getWeather(city));
