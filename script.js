@@ -1,4 +1,4 @@
-const key = "YOUR_API_KEY"; // replace
+const key = "46bc014f7ccaffc87b0c2ba98d4abe1d"; 
 const $ = s => document.querySelector(s);
 
 $("#btn").onclick = getWeather;
